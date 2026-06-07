@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEST CLIENT · Asistencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+--bg: #0f172a;
+--surface: #1e293b;
+--surface2: #263348;
+--accent: #38bdf8;
+--btn: #6366f1;
+--btn-hover:#4f46e5;
+--text: #f1f5f9;
+--muted: #94a3b8;
+--border: #334155;
+--green: #22c55e;
+--yellow: #f59e0b;
+--red: #ef4444;
+--blue: #38bdf8;
+--gray: #64748b;
+--purple: #6366f1;
+--r: 12px;
+--r-sm: 8px;
+--r-xs: 6px;
+}
+
+body {
+font-family: 'Space Grotesk', sans-serif;
+background: var(--bg);
+color: var(--text);
+min-height: 100vh;
+}
+
+/* LOGIN */
+#screen-login {
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+padding: 24px;
+}
+
+.login-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--r);
+padding: 44px 48px;
+width: 100%;
+max-width: 420px;
+box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+}
+
+.login-logo {
+text-align: center;
+margin-bottom: 36px;
+}
+
+.brand {
+font-size: 26px;
+font-weight: 700;
+letter-spacing: -0.5px;
+}
+
+.brand em {
+color: var(--accent);
+font-style: normal;
+}
+
+.brand-sub {
+font-size: 13px;
+color: var(--muted);
+margin-top: 5px;
+font-weight: 400;
+}
+
+.fgroup {
+margin-bottom: 20px;
+}
+
+.fgroup label {
+display: block;
+font-size: 11px;
+font-weight: 600;
+color: var(--muted);
+text-transform: uppercase;
+letter-spacing: 0.6px;
+margin-bottom: 8px;
+}
+
+.fgroup input,
+.fgroup select {
+width: 100%;
+background: var(--bg);
+border: 1px solid var(--border);
+border-radius: var(--r-sm);
+color: var(--text);
+font-family: inherit;
+font-size: 15px;
+padding: 12px 14px;
+outline: none;
+transition: border-color .2s;
+}
+
+.fgroup input:focus,
+.fgroup select:focus { border-color: var(--accent); }
+
+.btn-main {
+width: 100%;
+background: var(--btn);
+color: #fff;
+border: none;
+border-radius: var(--r-sm);
+font-family: inherit;
+font-size: 15px;
+font-weight: 600;
+padding: 13px;
+cursor: pointer;
+transition: background .2s, transform .1s;
+margin-top: 4px;
+}
+
+.btn-main:hover { background: var(--btn-hover); }
+.btn-main:active { transform: scale(.98); }
+
+.login-err {
+display: none;
+background: rgba(239,68,68,.13);
+border: 1px solid rgba(239,68,68,.35);
+color: #fca5a5;
+border-radius: var(--r-xs);
+padding: 10px 14px;
+font-size: 13px;
+margin-top: 14px;
+}
+
+.login-err.show { display: block; }
+
+/* DASHBOARD */
+#screen-dashboard {
+display: none;
+flex-direction: column;
+min-height: 100vh;
+}
+
+#screen-dashboard.on { display: flex; }
+
+.hdr {
+position: relative;
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+height: 58px;
+padding: 0 24px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.hdr-brand { font-size: 16px; font-weight: 700; white-space: nowrap; }
+.hdr-brand em { color: var(--accent); font-style: normal; }
+
+.hdr-area {
+font-size: 13px;
+font-weight: 500;
+color: var(--muted);
+text-align: center;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+.btn-horarios {
+  background: #38bdf8;
+  color: #0f172a;
+  border: 1px solid #38bdf8;
+  border-radius: var(--r-xs);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  text-decoration: none;
+  transition: opacity .2s;
+  white-space: nowrap;
+  display: none;
+  align-items: center;
+}
+.btn-horarios:hover { opacity: .85; }
+.btn-excel {
+  background: #22c55e;
+  color: #0f172a;
+  border: 1px solid #22c55e;
+  border-radius: var(--r-xs);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  text-decoration: none;
+  transition: opacity .2s;
+  white-space: nowrap;
+  display: none;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+}
+.btn-excel:hover { opacity: .85; }
+/* FaceCheck branding */
+.product-brand {
+  position: absolute;
+  right: 16px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  text-align: right;
+  pointer-events: none;
+  z-index: 5;
+}
+.product-brand-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e2e8f0;
+  letter-spacing: 0.3px;
+}
+.product-brand-by {
+  font-size: 9px;
+  color: #94a3b8;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+@media (max-width: 600px) {
+  .product-brand-name { font-size: 12px; }
+  .product-brand-by   { font-size: 8px; }
+  .product-brand      { right: 12px; top: 10px; }
+}
+
+.btn-logout {
+background: transparent;
+border: 1px solid var(--border);
+color: var(--muted);
+border-radius: var(--r-xs);
+font-family: inherit;
+font-size: 13px;
+font-weight: 500;
+padding: 7px 14px;
+cursor: pointer;
+transition: all .2s;
+white-space: nowrap;
+margin-right: 110px;
+}
+
+.btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+.filters {
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+padding: 14px 24px;
+display: flex;
+flex-wrap: wrap;
+gap: 12px;
+align-items: flex-end;
+}
+
+.fg {
+display: flex;
+flex-direction: column;
+gap: 5px;
+}
+
+.fg label {
+font-size: 10px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.6px;
+color: var(--muted);
+}
+
+.fg input,
+.fg select {
+background: var(--surface2);
+border: 1px solid var(--border);
+border-radius: var(--r-xs);
+color: var(--text);
+font-family: inherit;
+font-size: 14px;
+padding: 8px 12px;
+height: 36px;
+outline: none;
+transition: border-color .2s;
+min-width: 130px;
+}
+
+.fg input[type="date"] {
+min-width: 140px;
+color-scheme: dark;
+}
+
+/* CAMBIO 1: campo de búsqueda */
+.fg input#fBusqueda {
+min-width: 200px;
+}
+
+.fg input:focus,
+.fg select:focus { border-color: var(--accent); }
+
+.fg select option { background: var(--surface); }
+
+.btn-search {
+background: var(--accent);
+color: var(--bg);
+border: none;
+border-radius: var(--r-xs);
+font-family: inherit;
+font-size: 14px;
+font-weight: 700;
+padding: 8px 22px;
+height: 36px;
+cursor: pointer;
+transition: opacity .2s, transform .1s;
+align-self: flex-end;
+}
+
+.btn-search:hover { opacity: .85; }
+.btn-search:active { transform: scale(.97); }
+
+.chips {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+padding: 14px 24px;
+}
+
+.chip {
+display: flex;
+align-items: center;
+gap: 8px;
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 24px;
+padding: 7px 16px;
+font-size: 13px;
+font-weight: 500;
+cursor: pointer;
+transition: border-color .2s;
+user-select: none;
+}
+
+.chip-dot {
+width: 9px;
+height: 9px;
+border-radius: 50%;
+flex-shrink: 0;
+}
+
+.chip-n {
+font-weight: 700;
+font-size: 15px;
+min-width: 16px;
+text-align: center;
+}
+
+.main {
+flex: 1;
+padding: 16px 24px 48px;
+}
+
+.loading {
+display: none;
+align-items: center;
+justify-content: center;
+gap: 12px;
+padding: 64px;
+color: var(--muted);
+font-size: 14px;
+}
+
+.loading.on { display: flex; }
+
+.spinner {
+width: 22px;
+height: 22px;
+border: 2px solid var(--border);
+border-top-color: var(--accent);
+border-radius: 50%;
+animation: spin .65s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.err-banner {
+display: none;
+background: rgba(239,68,68,.13);
+border: 1px solid rgba(239,68,68,.35);
+color: #fca5a5;
+border-radius: var(--r-sm);
+padding: 14px 18px;
+font-size: 13px;
+margin-bottom: 16px;
+}
+
+.err-banner.on { display: block; }
+
+.grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+gap: 14px;
+}
+
+.ecard {
+cursor: pointer;
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--r);
+padding: 18px 20px;
+display: flex;
+flex-direction: column;
+gap: 10px;
+transition: border-color .2s, transform .15s;
+}
+
+.ecard:hover {
+border-color: var(--accent);
+transform: translateY(-2px);
+}
+
+.ecard-name {
+font-size: 15px;
+font-weight: 600;
+line-height: 1.3;
+}
+
+.ecard-meta {
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+
+.meta-row {
+display: flex;
+gap: 6px;
+font-size: 12px;
+color: var(--muted);
+}
+
+.meta-label {
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.3px;
+min-width: 46px;
+flex-shrink: 0;
+}
+
+.divider {
+height: 1px;
+background: var(--border);
+}
+
+.times {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+}
+
+.tblock {
+background: var(--surface2);
+border-radius: var(--r-xs);
+padding: 9px 12px;
+}
+
+.t-label {
+font-size: 10px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+color: var(--muted);
+margin-bottom: 3px;
+}
+
+.t-planned {
+font-size: 11px;
+color: var(--muted);
+margin-bottom: 2px;
+}
+
+.t-real {
+font-size: 17px;
+font-weight: 600;
+}
+
+.ecard-foot {
+display: flex;
+align-items: center;
+gap: 10px;
+flex-wrap: wrap;
+}
+
+.badge {
+display: inline-flex;
+align-items: center;
+border-radius: 20px;
+padding: 4px 12px;
+font-size: 12px;
+font-weight: 600;
+}
+
+.b-puntual { background: rgba(34,197,94,.18); color: #4ade80; }
+.b-tardio { background: rgba(245,158,11,.18); color: #fbbf24; }
+.b-ausente { background: rgba(239,68,68,.18); color: #f87171; }
+.b-hora_extra { background: rgba(56,189,248,.18); color: #38bdf8; }
+.b-sin_horario{ background: rgba(100,116,139,.18);color: #94a3b8; }
+.b-feriado { background: rgba(99,102,241,.18); color: #818cf8; }
+
+.ecard-range-chips {
+display: flex;
+flex-wrap: wrap;
+gap: 5px;
+width: 100%;
+}
+
+.rchip {
+display: inline-flex;
+align-items: center;
+border-radius: 14px;
+padding: 3px 9px;
+font-size: 11px;
+font-weight: 600;
+}
+
+.rchip-puntual { background: rgba(34,197,94,.18); color: #4ade80; }
+.rchip-tardio { background: rgba(245,158,11,.18); color: #fbbf24; }
+.rchip-ausente { background: rgba(239,68,68,.18); color: #f87171; }
+.rchip-extra { background: rgba(56,189,248,.18); color: #38bdf8; }
+.rchip-sin { background: rgba(100,116,139,.18);color: #94a3b8; }
+
+.extra-min {
+font-size: 12px;
+color: var(--accent);
+font-weight: 600;
+}
+
+.empty {
+display: none;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 80px 24px;
+color: var(--muted);
+font-size: 15px;
+text-align: center;
+gap: 12px;
+}
+
+.empty.on { display: flex; }
+.empty-ico { font-size: 44px; opacity: .35; }
+
+@media (max-width: 640px) {
+.login-card { padding: 28px 20px; }
+.hdr { padding: 0 14px; }
+.hdr-brand { font-size: 14px; }
+.hdr-area { display: none; }
+.filters { padding: 12px 14px; }
+.fg { width: 100%; }
+.fg input,
+.fg select { min-width: unset; }
+.btn-search { width: 100%; }
+.chips { padding: 10px 14px; }
+.chip { font-size: 12px; }
+.main { padding: 12px 14px 40px; }
+.grid { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+.grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* MODAL */
+#modal-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.7);
+z-index: 1000;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 16px;
+animation: mFadeIn .2s ease;
+}
+
+#modal-box {
+background: #1e293b;
+border: 1px solid var(--border);
+border-radius: 12px;
+width: 100%;
+max-width: 680px;
+max-height: 90vh;
+display: flex;
+flex-direction: column;
+animation: mScaleIn .2s ease;
+overflow: hidden;
+}
+
+#modal-hdr {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 12px;
+padding: 20px 24px 16px;
+border-bottom: 1px solid var(--border);
+flex-shrink: 0;
+}
+
+#modal-nombre {
+font-size: 17px;
+font-weight: 700;
+line-height: 1.3;
+}
+.modal-foto-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+}
+.modal-foto-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#modal-hdr {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+#modal-sub {
+font-size: 13px;
+color: var(--muted);
+margin-top: 3px;
+}
+
+#modal-close {
+background: transparent;
+border: 1px solid var(--border);
+color: var(--muted);
+border-radius: 6px;
+width: 32px;
+height: 32px;
+cursor: pointer;
+font-size: 15px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+transition: border-color .2s, color .2s;
+}
+
+#modal-close:hover { border-color: var(--red); color: var(--red); }
+
+#modal-body {
+overflow-y: auto;
+padding: 20px 24px 28px;
+flex: 1;
+}
+
+.modal-section-title {
+font-size: 11px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.6px;
+color: var(--muted);
+margin-bottom: 8px;
+margin-top: 16px;
+}
+
+.modal-horario-grid {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+margin-bottom: 12px;
+}
+
+.modal-horario-row {
+display: flex;
+align-items: center;
+gap: 6px;
+background: #0f172a;
+border-radius: 6px;
+padding: 4px 10px;
+font-size: 12px;
+}
+
+.modal-horario-dia {
+color: #94a3b8;
+font-weight: 600;
+text-transform: uppercase;
+font-size: 11px;
+}
+
+.modal-horario-horas {
+color: #e2e8f0;
+}
+
+.modal-spinner {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+padding: 40px;
+color: var(--muted);
+font-size: 14px;
+}
+
+.modal-table-wrap {
+overflow-x: auto;
+border-radius: 8px;
+border: 1px solid var(--border);
+}
+
+.modal-table {
+width: 100%;
+border-collapse: collapse;
+font-size: 13px;
+}
+
+.modal-table th {
+background: var(--surface2);
+padding: 9px 12px;
+text-align: left;
+font-size: 10px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+color: var(--muted);
+white-space: nowrap;
+}
+
+.modal-table td {
+padding: 9px 12px;
+border-top: 1px solid var(--border);
+color: var(--text);
+white-space: nowrap;
+}
+
+.modal-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+.badge-entrada {
+display: inline-flex;
+align-items: center;
+background: rgba(34,197,94,.18);
+color: #4ade80;
+border-radius: 20px;
+padding: 3px 10px;
+font-size: 11px;
+font-weight: 600;
+}
+
+.badge-salida {
+display: inline-flex;
+align-items: center;
+background: rgba(100,116,139,.18);
+color: #94a3b8;
+border-radius: 20px;
+padding: 3px 10px;
+font-size: 11px;
+font-weight: 600;
+}
+
+.modal-empty {
+text-align: center;
+color: var(--muted);
+font-size: 14px;
+padding: 32px 0;
+}
+
+.modal-no-config {
+background: var(--surface2);
+border-radius: 8px;
+padding: 14px 16px;
+color: var(--muted);
+font-size: 13px;
+margin-bottom: 24px;
+}
+
+.modal-tipo-filter {
+display: flex;
+gap: 8px;
+margin-bottom: 12px;
+}
+
+.modal-filter-btn {
+background: #1e293b;
+color: #f1f5f9;
+border: 1px solid #334155;
+border-radius: 6px;
+font-family: inherit;
+font-size: 13px;
+font-weight: 600;
+padding: 5px 14px;
+cursor: pointer;
+transition: background .15s, color .15s;
+}
+
+.modal-filter-btn.active {
+background: #38bdf8;
+color: #0f172a;
+border-color: #38bdf8;
+}
+
+@keyframes mFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mScaleIn { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
+
+@media (max-width: 640px) {
+#modal-box { max-height: 95vh; border-radius: 10px; }
+#modal-body { padding: 16px 16px 24px; }
+#modal-hdr { padding: 16px 16px 14px; }
+}
+
+.row-tardio td { color: #f59e0b; }
+.row-extra td { color: #38bdf8; }
+    .rchip-flexible { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+    .badge-flexible  { background: rgba(168, 85, 247, 0.2);  color: #a855f7; }
+    .badge-flexible  { background: rgba(168, 85, 247, 0.2);  color: #a855f7; }
+/* ── Horario editable ── */
+.modal-horario-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.modal-horario-hdr .modal-section-title { margin: 0; }
+.btn-editar-horario {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: var(--r-xs);
+  font-size: 12px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-editar-horario:hover { border-color: var(--accent); color: var(--accent); }
+.btn-editar-horario.activo { border-color: var(--accent); color: var(--accent); }
+.modal-horario-input {
+  background: rgba(255,255,255,.07);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xs);
+  color: var(--text);
+  padding: 2px 6px;
+  font-size: 13px;
+  width: 82px;
+}
+.modal-horario-input:focus { outline: none; border-color: var(--accent); }
+.modal-horario-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.btn-horario-guardar {
+  background: var(--accent);
+  color: #0f172a;
+  border: none;
+  border-radius: var(--r-xs);
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-horario-guardar:hover { opacity: .85; }
+.btn-horario-cancelar {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: var(--r-xs);
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btn-horario-cancelar:hover { border-color: #e2e8f0; color: #e2e8f0; }
+.btn-horario-quitar {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  border-radius: var(--r-xs);
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btn-horario-quitar:hover { background: rgba(239,68,68,.1); }
+.modal-horario-msg { font-size: 12px; margin-top: 8px; min-height: 16px; }
+.modal-horario-msg.ok  { color: #4ade80; }
+.modal-horario-msg.err { color: var(--red); }
+.badge-override {
+  font-size: 10px;
+  background: rgba(56,189,248,.15);
+  color: var(--accent);
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-left: 8px;
+  font-weight: 500;
+}
+.badge-flex {
+  font-size: 11px;
+  background: rgba(139,92,246,.2);
+  color: #a78bfa;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-weight: 500;
+}
+.btn-flex-toggle {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+  margin-left: 6px;
+}
+.btn-flex-toggle.activo {
+  background: rgba(139,92,246,.2);
+  border-color: #a78bfa;
+  color: #a78bfa;
+}
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="screen-login">
+<div class="login-card">
+<div class="login-logo">
+<div class="brand">TEST CLIENT <em>&middot;</em> Asistencia</div>
+<div class="brand-sub">Panel de control de asistencia</div>
+</div>
+<div class="fgroup">
+<label for="inp-codigo">C&oacute;digo de acceso</label>
+<input id="inp-codigo" type="password" placeholder="Ingres&aacute; tu c&oacute;digo" autocomplete="off">
+</div>
+<button class="btn-main" id="btn-login">Ingresar</button>
+<div class="login-err" id="login-err">C&oacute;digo incorrecto. Verific&aacute; e intent&aacute; de nuevo.</div>
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="screen-dashboard">
+
+<header class="hdr">
+<div class="hdr-brand"><em>TEST CLIENT</em></div>
+<div class="hdr-area" id="hdr-area">&mdash;</div>
+<a href="QR_horarios_test.html" id="link-horarios"
+   class="btn-horarios">Configurar horarios</a>
+<button class="btn-excel" id="btn-excel"
+  onclick="descargarExcel()">⬇ Excel</button>
+<button class="btn-logout" id="btn-logout">Cerrar sesión</button>
+<div class="product-brand">
+  <span class="product-brand-name">FaceCheck</span>
+  <span class="product-brand-by">by Kama</span>
+</div>
+</header>
+
+<!-- FILTROS -->
+<div class="filters">
+<div class="fg">
+<label>Desde</label>
+<input id="f-fecha-desde" type="date">
+</div>
+<div class="fg">
+<label>Hasta</label>
+<input id="f-fecha-hasta" type="date">
+</div>
+<div class="fg" id="fg-area" style="display:none">
+<label>&Aacute;rea</label>
+<select id="f-area">
+<option value="">Todas las &aacute;reas</option>
+<option value="Jefa de sucursal">Jefa de sucursal</option>
+<option value="Mantenimiento">Mantenimiento</option>
+<option value="DJ y T&eacute;cnica">DJ y T&eacute;cnica</option>
+<option value="Ambientaci&oacute;n">Ambientaci&oacute;n</option>
+<option value="Gastronom&iacute;a">Gastronom&iacute;a</option>
+<option value="Coordinaci&oacute;n">Coordinaci&oacute;n</option>
+<option value="Limpieza">Limpieza</option>
+<option value="Porter&iacute;a">Porter&iacute;a</option>
+<option value="Estructura Corporativa">Estructura Corp.</option>
+</select>
+</div>
+<div class="fg">
+<label>Sal&oacute;n</label>
+<select id="f-salon">
+<option value="">Todos los salones</option>
+<optgroup label="&mdash; Zona CABA &mdash;">
+<option value="zona:CABA">Toda la zona CABA</option>
+<option value="CABA Boutique">CABA Boutique</option>
+<option value="Caballito 1">Caballito 1</option>
+<option value="Caballito 2">Caballito 2</option>
+<option value="Costanera 1">Costanera 1</option>
+<option value="Costanera 2">Costanera 2</option>
+<option value="Dardo Rocha">Dardo Rocha</option>
+<option value="Darwin 1">Darwin 1</option>
+<option value="Darwin 2">Darwin 2</option>
+<option value="DOT">DOT</option>
+<option value="Nu&ntilde;ez">Nu&ntilde;ez</option>
+<option value="Palermo Hollywood">Palermo Hollywood</option>
+<option value="Palermo Soho">Palermo Soho</option>
+<option value="Paseo Colon">Paseo Colon</option>
+<option value="Puerto Madero">Puerto Madero</option>
+<option value="Puerto Madero Boutique">Puerto Madero Boutique</option>
+<option value="Recoleta">Recoleta</option>
+<option value="San Isidro">San Isidro</option>
+<option value="San Telmo">San Telmo</option>
+<option value="San Telmo 2">San Telmo 2</option>
+<option value="San Telmo Boutique">San Telmo Boutique</option>
+<option value="Vicente Lopez">Vicente Lopez</option>
+</optgroup>
+<optgroup label="&mdash; Zona NORTE &mdash;">
+<option value="zona:NORTE">Toda la zona NORTE</option>
+<option value="Bayres Eventos">Bayres Eventos</option>
+<option value="Bella Vista">Bella Vista</option>
+<option value="Bella Vista 2">Bella Vista 2</option>
+<option value="Benavidez 1">Benavidez 1</option>
+<option value="Benavidez 2">Benavidez 2</option>
+<option value="Campana">Campana</option>
+<option value="Champagnat Boutique">Champagnat Boutique</option>
+<option value="Del Viso">Del Viso</option>
+<option value="Escobar">Escobar</option>
+<option value="House">House</option>
+<option value="Hurlingham">Hurlingham</option>
+<option value="Martinez">Martinez</option>
+<option value="Maschwitz">Maschwitz</option>
+<option value="Oficina">Oficina</option>
+<option value="Olivos">Olivos</option>
+<option value="Olivos 2">Olivos 2</option>
+<option value="Palacio Sans Souci">Palacio Sans Souci</option>
+<option value="Pilar">Pilar</option>
+<option value="Pilar boutique">Pilar boutique</option>
+<option value="Pilar Hotel">Pilar Hotel</option>
+<option value="Quinta">Quinta</option>
+<option value="San Miguel">San Miguel</option>
+<option value="Villa de Mayo">Villa de Mayo</option>
+<option value="Villa de Mayo Boutique">Villa de Mayo Boutique</option>
+</optgroup>
+<optgroup label="&mdash; Zona OESTE &mdash;">
+<option value="zona:OESTE">Toda la zona OESTE</option>
+<option value="Acceso Oeste">Acceso Oeste</option>
+<option value="Acceso Oeste 2">Acceso Oeste 2</option>
+<option value="General Rodriguez">General Rodriguez</option>
+<option value="Haedo">Haedo</option>
+<option value="Haedo 2">Haedo 2</option>
+<option value="Ituzaingo">Ituzaingo</option>
+<option value="Ituzaingo 2">Ituzaingo 2</option>
+<option value="Liniers">Liniers</option>
+<option value="Merlo">Merlo</option>
+<option value="Merlo 2">Merlo 2</option>
+<option value="Moreno">Moreno</option>
+<option value="Moron">Moron</option>
+<option value="Ramos Boutique">Ramos Boutique</option>
+<option value="Ramos Boutique 2">Ramos Boutique 2</option>
+<option value="Ramos Mejia">Ramos Mejia</option>
+<option value="Ramos Mejia 2">Ramos Mejia 2</option>
+<option value="San Justo">San Justo</option>
+<option value="San Justo 2">San Justo 2</option>
+<option value="San Martin 1">San Martin 1</option>
+<option value="San Martin 2">San Martin 2</option>
+<option value="San Martin 3">San Martin 3</option>
+</optgroup>
+<optgroup label="&mdash; Zona SUR &mdash;">
+<option value="zona:SUR">Toda la zona SUR</option>
+<option value="Adrogue">Adrogue</option>
+<option value="Avellaneda 1">Avellaneda 1</option>
+<option value="Avellaneda 2">Avellaneda 2</option>
+<option value="Avellaneda 3">Avellaneda 3</option>
+<option value="Avellaneda 4">Avellaneda 4</option>
+<option value="Berazategui">Berazategui</option>
+<option value="Berazategui 2">Berazategui 2</option>
+<option value="Berisso">Berisso</option>
+<option value="Canning">Canning</option>
+<option value="Hipodromo La Plata">Hipodromo La Plata</option>
+<option value="Holiday Inn">Holiday Inn</option>
+<option value="Holiday Inn 2">Holiday Inn 2</option>
+<option value="Hudson">Hudson</option>
+<option value="Hudson 2">Hudson 2</option>
+<option value="La Plata">La Plata</option>
+<option value="La Plata 2">La Plata 2</option>
+<option value="La Plata Boutique">La Plata Boutique</option>
+<option value="Lomas">Lomas</option>
+<option value="Lomas Boutique">Lomas Boutique</option>
+<option value="Los Naranjos">Los Naranjos</option>
+<option value="Playa Grande">Playa Grande</option>
+<option value="Quilmes Boutique">Quilmes Boutique</option>
+<option value="Temperley">Temperley</option>
+</optgroup>
+</select>
+</div>
+<!-- CAMBIO 1: campo de búsqueda libre -->
+<div class="fg">
+<label>BUSCAR</label>
+<input type="text" id="fBusqueda" placeholder="Nombre o DNI" autocomplete="off">
+</div>
+<button class="btn-search" id="btn-buscar">Buscar</button>
+</div>
+
+<div class="chips">
+<div class="chip" data-estado="puntual"><span class="chip-dot" style="background:var(--green)"></span><span class="chip-n" id="cn-puntual">0</span><span>Puntual</span></div>
+<div class="chip" data-estado="tardio"><span class="chip-dot" style="background:var(--yellow)"></span><span class="chip-n" id="cn-tardio">0</span><span>Tard&iacute;o</span></div>
+<div class="chip" data-estado="ausente"><span class="chip-dot" style="background:var(--red)"></span><span class="chip-n" id="cn-ausente">0</span><span>Ausente</span></div>
+<div class="chip" data-estado="hora_extra"><span class="chip-dot" style="background:var(--blue)"></span><span class="chip-n" id="cn-hora_extra">0</span><span>Hora extra</span></div>
+<div class="chip" data-estado="sin_horario"><span class="chip-dot" style="background:var(--gray)"></span><span class="chip-n" id="cn-sin_horario">0</span><span>Sin horario</span></div>
+          <div class="chip" data-estado="flexible">
+            <span class="chip-dot" style="background:#a855f7"></span>
+            <span class="chip-n" id="cn-flexible">0</span>
+            <span>Flexible</span>
+          </div>
+</div>
+
+<main class="main">
+<div class="err-banner" id="err-banner"></div>
+<div class="loading" id="loading"><div class="spinner"></div>Cargando asistencia&hellip;</div>
+<div class="grid" id="emp-grid"></div>
+<div class="empty" id="empty"><div class="empty-ico">&#128269;</div><div>Sin resultados para los filtros seleccionados.</div></div>
+<!-- CAMBIO 2: placeholder inicial -->
+<div class="empty" id="grid-placeholder"><div class="empty-ico">&#128101;</div><div>Filtrá por área, salón, o buscá un empleado para ver resultados.</div></div>
+</main>
+
+</div>
+
+<script>
+/* CONFIG */
+const API_URL   = "https://bq5vl6isk5v26ebokhtrrdo6nq0gvdhs.lambda-url.us-east-2.on.aws";
+const CLIENT_ID = "test-client";
+
+/* traducción de días al español */
+const DIAS_ES = {
+'Monday':'Lunes', 'Tuesday':'Martes', 'Wednesday':'Miércoles',
+'Thursday':'Jueves', 'Friday':'Viernes',
+'Saturday':'Sábado', 'Sunday':'Domingo'
+};
+
+const ACCESOS = {
+"1234": { label: "Admin", area: null }
+};
+
+const ZONAS = {
+CABA: ['CABA Boutique','Caballito 1','Caballito 2','Costanera 1','Costanera 2',
+'Dardo Rocha','Darwin 1','Darwin 2','DOT','Nuñez','Palermo Hollywood',
+'Palermo Soho','Paseo Colon','Puerto Madero','Puerto Madero Boutique',
+'Recoleta','San Isidro','San Telmo','San Telmo 2','San Telmo Boutique',
+'Vicente Lopez'],
+NORTE:['Bayres Eventos','Bella Vista','Bella Vista 2','Benavidez 1','Benavidez 2',
+'Campana','Champagnat Boutique','Del Viso','Escobar','House','Hurlingham',
+'Martinez','Maschwitz','Oficina','Olivos','Olivos 2','Palacio Sans Souci',
+'Pilar','Pilar boutique','Pilar Hotel','Quinta','San Miguel',
+'Villa de Mayo','Villa de Mayo Boutique'],
+OESTE:['Acceso Oeste','Acceso Oeste 2','General Rodriguez','Haedo','Haedo 2',
+'Ituzaingo','Ituzaingo 2','Liniers','Merlo','Merlo 2','Moreno','Moron',
+'Ramos Boutique','Ramos Boutique 2','Ramos Mejia','Ramos Mejia 2',
+'San Justo','San Justo 2','San Martin 1','San Martin 2','San Martin 3'],
+SUR: ['Adrogue','Avellaneda 1','Avellaneda 2','Avellaneda 3','Avellaneda 4',
+'Berazategui','Berazategui 2','Berisso','Canning','Hipodromo La Plata',
+'Holiday Inn','Holiday Inn 2','Hudson','Hudson 2','La Plata','La Plata 2',
+'La Plata Boutique','Lomas','Lomas Boutique','Los Naranjos',
+'Playa Grande','Quilmes Boutique','Temperley']
+};
+
+let session = null;
+let allEmps = [];
+let isRangeMode = false;
+let activeChip = null;
+
+function todayISO() {
+const d = new Date();
+const y = d.getFullYear();
+const m = String(d.getMonth()+1).padStart(2,'0');
+const dd = String(d.getDate()).padStart(2,'0');
+return y + '-' + m + '-' + dd;
+}
+
+function toBackend(iso) {
+if (!iso) return '';
+const parts = iso.split('-');
+return parts[2] + '/' + parts[1] + '/' + parts[0];
+}
+
+function esc(s) {
+return String(s||'')
+.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function badgeCls(estado) {
+const m = { puntual:'b-puntual', tardio:'b-tardio', ausente:'b-ausente',
+hora_extra:'b-hora_extra', sin_horario:'b-sin_horario', feriado:'b-feriado', flexible:'badge-flexible' };
+return m[estado] || 'b-sin_horario';
+}
+
+function badgeTxt(estado) {
+const m = { puntual:'Puntual', tardio:'Tardío', ausente:'Ausente',
+hora_extra:'Hora extra', sin_horario:'Sin horario', flexible:'Flexible', feriado:'Feriado' };
+return m[estado] || estado;
+}
+
+const $login = document.getElementById('screen-login');
+const $dash = document.getElementById('screen-dashboard');
+const $codigo = document.getElementById('inp-codigo');
+const $btnLogin = document.getElementById('btn-login');
+const $loginErr = document.getElementById('login-err');
+
+function tryLogin() {
+const c = $codigo.value.trim().toLowerCase();
+const acc = ACCESOS[c];
+if (!acc) { $loginErr.classList.add('show'); $codigo.focus(); return; }
+$loginErr.classList.remove('show');
+session = { codigo: c, label: acc.label, area: acc.area };
+sessionStorage.setItem('janos_s', JSON.stringify(session));
+openDash();
+}
+
+$btnLogin.addEventListener('click', tryLogin);
+$codigo.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryLogin(); });
+$codigo.addEventListener('input', function() { $loginErr.classList.remove('show'); });
+
+const $hdrArea = document.getElementById('hdr-area');
+const $fgArea = document.getElementById('fg-area');
+const $fDesde = document.getElementById('f-fecha-desde');
+const $fHasta = document.getElementById('f-fecha-hasta');
+const $fArea = document.getElementById('f-area');
+const $fSalon = document.getElementById('f-salon');
+const $buscar = document.getElementById('btn-buscar');
+const $logout = document.getElementById('btn-logout');
+const $loading = document.getElementById('loading');
+const $errBann = document.getElementById('err-banner');
+const $grid = document.getElementById('emp-grid');
+const $empty = document.getElementById('empty');
+/* CAMBIO 3: nuevas referencias */
+const $placeholder = document.getElementById('grid-placeholder');
+const $fBusqueda = document.getElementById('fBusqueda');
+
+$logout.addEventListener('click', function() {
+
+document.getElementById('link-horarios').style.display = 'none';
+document.getElementById('btn-excel').style.display = 'none';
+sessionStorage.removeItem('janos_s');
+session = null; allEmps = []; isRangeMode = false;
+$codigo.value = '';
+$dash.classList.remove('on');
+$login.style.display = 'flex';
+});
+
+$buscar.addEventListener('click', doFetch);
+$fSalon.addEventListener('change', renderFiltered);
+$fArea.addEventListener('change', renderFiltered);
+/* CAMBIO 3: búsqueda en tiempo real con debounce 200ms */
+var _searchTimer = null;
+$fBusqueda.addEventListener('input', function() {
+clearTimeout(_searchTimer);
+_searchTimer = setTimeout(renderFiltered, 200);
+});
+
+function openDash() {
+$login.style.display = 'none';
+$dash.classList.add('on');
+$hdrArea.textContent = session.area === null ? 'Vista completa · RRHH' : session.label;
+$fgArea.style.display = session.area === null ? 'flex' : 'none';
+var hoy = todayISO();
+if (!$fDesde.value) $fDesde.value = hoy;
+if (!$fHasta.value) $fHasta.value = hoy;
+doFetch();
+document.getElementById('link-horarios').style.display = 'inline-flex';
+document.getElementById('btn-excel').style.display = 'inline-flex';
+}
+
+async function doFetch() {
+var desde = $fDesde.value || todayISO();
+var hasta = $fHasta.value || todayISO();
+var area = session.area !== null ? session.area : ($fArea.value || null);
+
+var url = API_URL + '/asistencia/reporte?clientId=' + encodeURIComponent(CLIENT_ID);
+
+if (desde === hasta) {
+isRangeMode = false;
+url += '&desde=' + encodeURIComponent(toBackend(desde)) + '&hasta=' + encodeURIComponent(toBackend(desde));
+} else {
+isRangeMode = true;
+url += '&desde=' + encodeURIComponent(toBackend(desde));
+url += '&hasta=' + encodeURIComponent(toBackend(hasta));
+}
+
+
+setLoading(true);
+hideErr();
+$grid.innerHTML = '';
+$empty.classList.remove('on');
+/* CAMBIO 3: limpiar búsqueda y placeholder al hacer fetch */
+$placeholder.classList.remove('on');
+$fBusqueda.value = '';
+
+if (activeChip !== null) {
+activeChip = null;
+document.querySelectorAll('.chip[data-estado]').forEach(function(c) {
+c.style.borderColor = '';
+});
+}
+
+try {
+var res = await fetch(url, { redirect:'follow', credentials:'omit' });
+var data = await res.json();
+if (!data.ok) throw new Error(data.error || 'Error del servidor');
+allEmps = data.empleados || [];
+renderFiltered();
+} catch(e) {
+showErr('Error de conexión: ' + e.message);
+allEmps = [];
+} finally {
+setLoading(false);
+}
+}
+
+/* CAMBIO 2: renderizado condicional — solo muestra tarjetas si hay filtro activo */
+function renderFiltered() {
+var salon = $fSalon.value;
+var busqueda = $fBusqueda.value.trim().toLowerCase();
+var area = $fArea.value;
+var hayFiltro = salon !== '' || area !== '' || busqueda.length >= 1 || activeChip !== null;
+
+$grid.innerHTML = '';
+$empty.classList.remove('on');
+$placeholder.classList.remove('on');
+
+if (!hayFiltro) {
+updateChips(allEmps);
+$placeholder.classList.add('on');
+return;
+}
+
+var lista = allEmps;
+
+if (salon && salon.indexOf('zona:') === 0) {
+var zona = salon.slice(5);
+var salonesZ = ZONAS[zona] || [];
+lista = lista.filter(function(e) { return salonesZ.indexOf(e.salon || '') !== -1; });
+} else if (salon) {
+lista = lista.filter(function(e) { return (e.salon || '') === salon; });
+}
+
+if (area) {
+lista = lista.filter(function(e) {
+return (e.area || '').toUpperCase() === area.toUpperCase();
+});
+}
+if (busqueda.length >= 1) {
+lista = lista.filter(function(e) {
+var nombre = (e.nombre || '').toLowerCase();
+var id = String(e.id || '').toLowerCase();
+return nombre.indexOf(busqueda) !== -1 || id.indexOf(busqueda) !== -1;
+});
+}
+
+updateChips(lista);
+
+if (!lista.length) { $empty.classList.add('on'); return; }
+lista.forEach(function(e) { $grid.appendChild(buildCard(e)); });
+
+if (activeChip) applyChipFilter();
+}
+
+function formatExtra(min) {
+if (!min || min <= 0) return '';
+if (min < 60) return '+' + min + 'min extra';
+var h = Math.floor(min / 60);
+var m = min % 60;
+return '+' + h + 'h' + (m > 0 ? ' ' + m + 'min' : '') + ' extra';
+}
+
+function buildCard(e) {
+var div = document.createElement('div');
+div.className = 'ecard';
+
+if (isRangeMode) {
+var estadosList = [];
+if ((e.puntual || 0) > 0) estadosList.push('puntual');
+if ((e.tardio || 0) > 0) estadosList.push('tardio');
+if ((e.ausente || 0) > 0) estadosList.push('ausente');
+if ((e.hora_extra || 0) > 0) estadosList.push('hora_extra');
+if ((e.sin_horario || 0) > 0) estadosList.push('sin_horario');
+          if ((e.flexible || 0) > 0) estadosList.push('flexible');
+div.dataset.estados = estadosList.join(',');
+
+var extraMin = e.hora_extra_minutos || 0;
+div.innerHTML =
+'<div class="ecard-name">' + esc(e.nombre||'—') + '</div>' +
+'<div class="ecard-meta">' +
+'<div class="meta-row"><span class="meta-label">Salón</span><span>' + esc(e.salon||'—') + '</span></div>' +
+(e.area ? '<div class="meta-row"><span class="meta-label">Área</span><span>' + esc(e.area) + '</span></div>' : '') +
+'</div>' +
+'<div class="divider"></div>' +
+'<div class="ecard-foot">' +
+'<div class="ecard-range-chips">' +
+'<span class="rchip rchip-puntual">Puntual ' + (e.puntual||0) + '</span>' +
+'<span class="rchip rchip-tardio">Tardío ' + (e.tardio||0) + '</span>' +
+'<span class="rchip rchip-ausente">Ausente ' + (e.ausente||0) + '</span>' +
+'<span class="rchip rchip-extra">H.Extra ' + (e.hora_extra||0) + '</span>' +
+'<span class="rchip rchip-sin">Sin horario ' + (e.sin_horario||0) + '</span>' +
+'<span class="rchip rchip-flexible">Flexible ' + (e.flexible||0) + '</span>' +
+'</div>' +
+(extraMin > 0 ? '<span class="extra-min">' + formatExtra(extraMin) + '</span>' : '') +
+'</div>';
+} else {
+div.dataset.estado = e.estado || '';
+
+var entEsp = (e.horario_esperado && e.horario_esperado.entrada) ? e.horario_esperado.entrada : null;
+var salEsp = (e.horario_esperado && e.horario_esperado.salida) ? e.horario_esperado.salida : null;
+var entReal = (e.registro_real && e.registro_real.entrada) ? e.registro_real.entrada : null;
+var salReal = (e.registro_real && e.registro_real.salida) ? e.registro_real.salida : null;
+var conHor = entEsp !== null;
+
+div.innerHTML =
+'<div class="ecard-name">' + esc(e.nombre||'—') + '</div>' +
+'<div class="ecard-meta">' +
+'<div class="meta-row"><span class="meta-label">Salón</span><span>' + esc(e.salon||'—') + '</span></div>' +
+(e.area ? '<div class="meta-row"><span class="meta-label">Área</span><span>' + esc(e.area) + '</span></div>' : '') +
+'</div>' +
+'<div class="divider"></div>' +
+'<div class="times">' +
+'<div class="tblock">' +
+'<div class="t-label">Entrada</div>' +
+'<div class="t-planned">' + (conHor ? 'Esp: '+entEsp : 'Sin horario') + '</div>' +
+'<div class="t-real">' + (entReal||'—') + '</div>' +
+'</div>' +
+'<div class="tblock">' +
+'<div class="t-label">Salida</div>' +
+'<div class="t-planned">' + (conHor ? 'Esp: '+(salEsp||'—') : '') + '</div>' +
+'<div class="t-real">' + (salReal||'—') + '</div>' +
+'</div>' +
+'</div>' +
+'<div class="ecard-foot">' +
+'<span class="badge ' + badgeCls(e.estado) + '">' + badgeTxt(e.estado) + '</span>' +
+((e.hora_extra_minutos||0) > 0 ? '<span class="extra-min">+' + e.hora_extra_minutos + ' min extra</span>' : '') +
+'</div>';
+}
+
+div.addEventListener('click', function() { openHistorial(e); });
+return div;
+}
+
+function applyChipFilter() {
+var cards = $grid.querySelectorAll('.ecard');
+cards.forEach(function(card) {
+if (!activeChip) {
+card.style.display = '';
+} else if (isRangeMode) {
+var estados = (card.dataset.estados || '').split(',');
+card.style.display = estados.indexOf(activeChip) !== -1 ? '' : 'none';
+} else {
+card.style.display = (card.dataset.estado === activeChip) ? '' : 'none';
+}
+});
+}
+
+function filterByChip(estado) {
+activeChip = (activeChip === estado) ? null : estado;
+document.querySelectorAll('.chip[data-estado]').forEach(function(chip) {
+chip.style.borderColor = (chip.dataset.estado === activeChip) ? '#ffffff' : '';
+});
+applyChipFilter();
+}
+
+function updateChips(lista) {
+var c = { puntual:0, tardio:0, ausente:0, hora_extra:0, sin_horario:0, flexible:0 };
+
+if (isRangeMode) {
+lista.forEach(function(e) {
+var r = e.resumen || e;
+c.puntual += (e.puntual || 0);
+c.tardio += (e.tardio || 0);
+c.ausente += (e.ausente || 0);
+c.hora_extra += (e.hora_extra || 0);
+if ((r.puntual||0) + (r.tardio||0) + (r.ausente||0) + (r.feriado||0) === 0) c.sin_horario++;
+      c.flexible += (r.flexible || 0);
+});
+} else {
+lista.forEach(function(e) { if (e.estado in c) c[e.estado]++; });
+}
+
+document.getElementById('cn-puntual').textContent = c.puntual;
+document.getElementById('cn-tardio').textContent = c.tardio;
+document.getElementById('cn-ausente').textContent = c.ausente;
+document.getElementById('cn-hora_extra').textContent = c.hora_extra;
+document.getElementById('cn-sin_horario').textContent= c.sin_horario;
+    document.getElementById('cn-flexible').textContent= c.flexible;
+}
+
+function setLoading(on) {
+$loading.classList.toggle('on', on);
+$grid.style.opacity = on ? '.4' : '1';
+}
+
+function showErr(msg) { $errBann.textContent = '⚠ ' + msg; $errBann.classList.add('on'); }
+function hideErr() { $errBann.classList.remove('on'); }
+
+(function() {
+var raw = sessionStorage.getItem('janos_s');
+if (raw) {
+try {
+var s = JSON.parse(raw);
+if (s && ACCESOS[s.codigo]) { session = s; openDash(); return; }
+} catch(_) {}
+}
+$login.style.display = 'flex';
+})();
+
+var $modalOverlay, $modalNombre, $modalSub, $modalClose, $modalBody;
+
+function closeModal() {
+$modalOverlay.style.display = 'none';
+document.body.style.overflow = '';
+}
+
+function openModal() {
+$modalOverlay.style.display = 'flex';
+document.body.style.overflow = 'hidden';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+$modalOverlay = document.getElementById('modal-overlay');
+$modalNombre = document.getElementById('modal-nombre');
+$modalSub = document.getElementById('modal-sub');
+$modalClose = document.getElementById('modal-close');
+$modalBody = document.getElementById('modal-body');
+$modalClose.addEventListener('click', closeModal);
+$modalOverlay.addEventListener('click', function(e) {
+if (e.target === $modalOverlay) closeModal();
+});
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape' && $modalOverlay.style.display !== 'none') closeModal();
+});
+
+document.querySelectorAll('.chip[data-estado]').forEach(function(chip) {
+chip.addEventListener('click', function() { filterByChip(chip.dataset.estado); });
+});
+});
+
+function openHistorial(emp) {
+$modalNombre.textContent = emp.nombre || '—';
+$modalSub.textContent = '';
+$modalBody.innerHTML = '<div class="modal-spinner"><div class="spinner"></div>Cargando historial…</div>';
+openModal();
+
+var desde = $fDesde.value || todayISO();
+var hasta = $fHasta.value || todayISO();
+var url = API_URL + '/asistencia/historial?clientId=' + encodeURIComponent(CLIENT_ID) + '&dni=' + encodeURIComponent(emp.id || '') + '&desde=' + encodeURIComponent(toBackend(desde)) + '&hasta=' + encodeURIComponent(toBackend(hasta));
+
+fetch(url, { redirect:'follow', credentials:'omit' })
+.then(function(r) { return r.json(); })
+.then(function(data) {
+if (!data.ok) throw new Error(data.error || 'Error del servidor');
+$modalSub.textContent = (data.empleado.salon || '') + (data.empleado.area ? ' · ' + data.empleado.area : '');
+renderModalContent(data, emp.id);
+})
+.catch(function(err) {
+$modalBody.innerHTML = '<div class="modal-empty">⚠ ' + esc(err.message) + '</div>';
+});
+}
+
+function renderModalContent(data, empId) {
+var fotoUrl = (data.empleado && data.empleado.fotoUrl) ? data.empleado.fotoUrl : '';
+var $hdr = document.getElementById('modal-hdr');
+var $oldFoto = $hdr ? $hdr.querySelector('.modal-foto-wrap') : null;
+if ($oldFoto) $oldFoto.remove();
+if (fotoUrl && $hdr) {
+  var $fw = document.createElement('div');
+  $fw.className = 'modal-foto-wrap';
+  $fw.innerHTML = '<img src="' + esc(fotoUrl) + '" alt="foto">';
+  $hdr.insertBefore($fw, $hdr.firstChild);
+}
+var html = '';
+var dias = ['Lunes','Martes','Miércoles','Jueves',
+            'Viernes','Sábado','Domingo'];
+// Horario efectivo: override JSON si existe, área si no
+var jornadaRaw = (data.empleado && data.empleado.jornada)
+  ? String(data.empleado.jornada).trim() : '';
+var esOverride = jornadaRaw && jornadaRaw.charAt(0) === '{';
+var horarioEfectivo = {};
+if (esOverride) {
+  try {
+    var ovrJson = JSON.parse(jornadaRaw);
+    // Merge: base del área primero, override encima
+    // Los días no cubiertos por el override usan el horario del área
+    horarioEfectivo = Object.assign({}, data.horario_base || {});
+    Object.keys(ovrJson).forEach(function(dia) {
+      horarioEfectivo[dia] = ovrJson[dia];
+    });
+  } catch(e) {
+    esOverride = false;
+    horarioEfectivo = data.horario_base || {};
+  }
+} else {
+  horarioEfectivo = data.horario_base || {};
+}
+// Header de sección con botón Editar
+html += '<div class="modal-horario-hdr">'
+  + '<span class="modal-section-title">Horario'
+  + (esOverride ? '<span class="badge-override">personalizado</span>' : '')
+  + '</span>'
+  + '<button class="btn-editar-horario" id="btn-edit-hor">Editar</button>'
+  + '</div>';
+// Grilla de horario (vista o edición)
+if (!horarioEfectivo || Object.keys(horarioEfectivo).length === 0) {
+  html += '<div class="modal-no-config" id="hor-grid-view">'
+    + 'Sin horario configurado para esta área</div>';
+} else {
+  html += '<div class="modal-horario-grid" id="hor-grid-view">';
+  dias.forEach(function(dia) {
+    var h = horarioEfectivo[dia];
+    if (!h) return;
+    html += '<div class="modal-horario-row" data-dia="' + esc(dia) + '">'
+      + '<div class="modal-horario-dia">' + esc(dia) + '</div>'
+      + '<div class="modal-horario-horas">'
+      + (h.entrada === 'FLEXIBLE'
+          ? '<span class="badge-flex">Flex</span>'
+          : esc(h.entrada || '—') + ' – ' + esc(h.salida || '—'))
+      + '</div></div>';
+  });
+  html += '</div>';
+}
+// Grilla de edición (oculta hasta click en Editar)
+html += '<div id="hor-grid-edit" style="display:none">';
+html += '<div class="modal-horario-grid">';
+dias.forEach(function(dia) {
+  var h = horarioEfectivo[dia] || {};
+  var esF = (h.entrada === 'FLEXIBLE');
+  var slug = dia.normalize('NFD')
+    .replace(/[̀-ͯ]/g,'').toLowerCase();
+  html += '<div class="modal-horario-row">'
+    + '<div class="modal-horario-dia">' + esc(dia) + '</div>'
+    + '<div class="modal-horario-horas">'
+    + '<span id="hrs-' + slug + '"'
+    + (esF ? ' style="display:none"' : '') + '>'
+    + '<input type="time" class="modal-horario-input"'
+    + ' data-dia="' + esc(dia) + '" data-tipo="entrada"'
+    + ' value="' + esc(esF ? '' : (h.entrada || '')) + '">'
+    + ' – '
+    + '<input type="time" class="modal-horario-input"'
+    + ' data-dia="' + esc(dia) + '" data-tipo="salida"'
+    + ' value="' + esc(esF ? '' : (h.salida || '')) + '">'
+    + '</span>'
+    + '<button class="btn-flex-toggle' + (esF ? ' activo' : '') + '"'
+    + ' data-slug="' + slug + '" data-dia="' + esc(dia) + '"'
+    + ' type="button">Flex</button>'
+    + '</div></div>';
+});
+html += '</div>';
+html += '<div class="modal-horario-btns">'
+  + '<button class="btn-horario-guardar" id="btn-hor-guardar">Guardar</button>'
+  + '<button class="btn-horario-cancelar" id="btn-hor-cancelar">Cancelar</button>'
+  + (esOverride
+    ? '<button class="btn-horario-quitar" id="btn-hor-quitar">Quitar personalizado</button>'
+    : '')
+  + '</div>'
+  + '<div class="modal-horario-msg" id="hor-msg"></div>';
+html += '</div>';
+// Historial
+html += '<div class="modal-section-title">Historial</div>';
+var regs = (data.registros || []).slice().sort(function(a,b) {
+  var fa = a.fecha.split('/').reverse().join('') + (a.hora||'');
+  var fb = b.fecha.split('/').reverse().join('') + (b.hora||'');
+  return fb > fa ? 1 : fb < fa ? -1 : 0;
+});
+if (!regs.length) {
+  html += '<div class="modal-empty">Sin registros en el período seleccionado</div>';
+} else {
+  html += '<div class="modal-tipo-filter">'
+    + '<button class="modal-filter-btn active" data-filter="">Todas</button>'
+    + '<button class="modal-filter-btn" data-filter="ENTRADA">Entrada</button>'
+    + '<button class="modal-filter-btn" data-filter="SALIDA">Salida</button>'
+    + '</div>';
+  html += '<div class="modal-table-wrap"><table class="modal-table">'
+    + '<thead><tr>'
+    + '<th>Fecha</th><th>Día</th><th>Hora</th>'
+    + '<th>Tipo</th><th>Confianza</th><th>Distancia</th>'
+    + '</tr></thead><tbody>';
+  regs.forEach(function(r) {
+    var bc = r.tipo === 'ENTRADA' ? 'badge-entrada' : 'badge-salida';
+    var diaSp = DIAS_ES[r.dia] || r.dia;
+    var horDia = (horarioEfectivo && horarioEfectivo[diaSp])
+      ? horarioEfectivo[diaSp] : null;
+    var rowClass = '';
+    if (horDia && r.hora && horDia.entrada !== 'FLEXIBLE') {
+      if (r.tipo === 'ENTRADA' && horDia.entrada) {
+        var pE = horDia.entrada.split(':').map(Number);
+        var pR = r.hora.split(':').map(Number);
+        if ((pR[0]*60+pR[1])-(pE[0]*60+pE[1]) > 15) rowClass = 'row-tardio';
+      }
+      if (r.tipo === 'SALIDA' && horDia.salida) {
+        var pS = horDia.salida.split(':').map(Number);
+        var pRS = r.hora.split(':').map(Number);
+        if ((pRS[0]*60+pRS[1]) > (pS[0]*60+pS[1])) rowClass = 'row-extra';
+        if ((pRS[0]*60+pRS[1]) < (pS[0]*60+pS[1])) rowClass = 'row-anomalia';
+      }
+    }
+    if (r.tipo === 'SALIDA') {
+      var ultimaFechaEnt = null;
+      data.registros.forEach(function(reg) {
+        if (reg.tipo === 'ENTRADA') {
+          var d = new Date(reg.fecha.split('/').reverse().join('-')+'T'+reg.hora);
+          var dSal = new Date(r.fecha.split('/').reverse().join('-')+'T'+r.hora);
+          if (d <= dSal && (!ultimaFechaEnt || d > ultimaFechaEnt)) ultimaFechaEnt = d;
+        }
+      });
+      if (ultimaFechaEnt) {
+        var dSal2 = new Date(r.fecha.split('/').reverse().join('-')+'T'+r.hora);
+        if ((dSal2 - ultimaFechaEnt)/60000 > 840) rowClass = 'row-anomalia';
+      }
+    }
+    html += '<tr class="' + rowClass + '">'
+      + '<td>' + esc(r.fecha) + '</td>'
+      + '<td>' + esc(DIAS_ES[r.dia] || r.dia) + '</td>'
+      + '<td>' + esc(r.hora || '—') + '</td>'
+      + '<td><span class="badge ' + bc + '">' + esc(r.tipo) + '</span>'
+      + (rowClass === 'row-anomalia' ? ' ⚠️' : '') + '</td>'
+      + '<td>' + (r.confianza != null && r.confianza !== ''
+          ? (function() {
+              var c = parseFloat(r.confianza);
+              return esc(String(c <= 1 ? Math.round(c * 100) : Math.round(c))) + '%';
+            })()
+          : '—') + '</td>'
+      + '<td>' + (r.distancia != null ? esc(String(r.distancia)) + ' m' : '—') + '</td>'
+      + '</tr>';
+  });
+  html += '</tbody></table></div>';
+}
+$modalBody.innerHTML = html;
+// Listeners del editor de horario
+var $btnEdit     = document.getElementById('btn-edit-hor');
+var $gridView    = document.getElementById('hor-grid-view');
+var $gridEdit    = document.getElementById('hor-grid-edit');
+var $btnGuardar  = document.getElementById('btn-hor-guardar');
+var $btnCancelar = document.getElementById('btn-hor-cancelar');
+var $btnQuitar   = document.getElementById('btn-hor-quitar');
+var $horMsg      = document.getElementById('hor-msg');
+if ($btnEdit) {
+  $btnEdit.addEventListener('click', function() {
+    $gridView.style.display = 'none';
+    $gridEdit.style.display = '';
+    $btnEdit.classList.add('activo');
+    $btnEdit.textContent = 'Editando…';
+    $btnEdit.disabled = true;
+  });
+}
+if ($gridEdit) {
+  $gridEdit.querySelectorAll('.btn-flex-toggle')
+  .forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var activo = btn.classList.toggle('activo');
+      var el = document.getElementById('hrs-' + btn.dataset.slug);
+      if (el) el.style.display = activo ? 'none' : '';
+    });
+  });
+}
+function guardarHorario(jornadaJson) {
+  $horMsg.textContent = 'Guardando…';
+  $horMsg.className = 'modal-horario-msg';
+  fetch(API_URL + '/empleados/horario', {method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({clientId:CLIENT_ID, dni:empId, jornada:jornadaJson})})
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (!d.ok) throw new Error(d.error || 'Error');
+    $horMsg.textContent = '✓ Horario guardado';
+    $horMsg.className = 'modal-horario-msg ok';
+    setTimeout(function() { openHistorial({id:empId, nombre:$modalNombre.textContent}); }, 800);
+  })
+  .catch(function(e) {
+    $horMsg.textContent = '✗ ' + e.message;
+    $horMsg.className = 'modal-horario-msg err';
+  });
+}
+if ($btnGuardar) {
+  $btnGuardar.addEventListener('click', function() {
+    var obj = {};
+    // Días Flex: se capturan primero
+    $gridEdit.querySelectorAll('.btn-flex-toggle.activo')
+    .forEach(function(btn) {
+      obj[btn.dataset.dia] = {
+        entrada: 'FLEXIBLE', salida: 'FLEXIBLE'
+      };
+    });
+    // Días con horas: solo si no son Flex
+    $gridEdit.querySelectorAll('.modal-horario-input')
+    .forEach(function(inp) {
+      var dia = inp.dataset.dia;
+      if (obj[dia] && obj[dia].entrada === 'FLEXIBLE') return;
+      var val = inp.value.trim();
+      if (val) {
+        if (!obj[dia]) obj[dia] = {};
+        obj[dia][inp.dataset.tipo] = val;
+      }
+    });
+    if (Object.keys(obj).length === 0) {
+      $horMsg.textContent = 'No hay horarios ingresados';
+      $horMsg.className = 'modal-horario-msg err';
+      return;
+    }
+    guardarHorario(JSON.stringify(obj));
+  });
+}
+if ($btnCancelar) {
+  $btnCancelar.addEventListener('click', function() {
+    $gridView.style.display = '';
+    $gridEdit.style.display = 'none';
+    $btnEdit.classList.remove('activo');
+    $btnEdit.textContent = 'Editar';
+    $btnEdit.disabled = false;
+    $horMsg.textContent = '';
+    $horMsg.className = 'modal-horario-msg';
+  });
+}
+if ($btnQuitar) {
+  $btnQuitar.addEventListener('click', function() {
+    if (!confirm('¿Quitar el horario personalizado? El empleado volverá a usar el horario del área.')) return;
+    guardarHorario('');
+  });
+}
+// Filtros del historial
+var $filterBtns = $modalBody.querySelectorAll('.modal-filter-btn');
+$filterBtns.forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    $filterBtns.forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var f = btn.dataset.filter;
+    $modalBody.querySelectorAll('.modal-table tbody tr').forEach(function(row) {
+      row.style.display = (!f || row.textContent.includes(f)) ? '' : 'none';
+    });
+  });
+});
+}
+
+
+function descargarExcel() {
+  if (!allEmps || !allEmps.length) {
+    alert('No hay datos cargados. Aplicá un filtro primero.');
+    return;
+  }
+  var desde = $fDesde ? $fDesde.value : '';
+  var hasta = $fHasta ? $fHasta.value : '';
+  var filas = [];
+  var esRango = allEmps[0] && allEmps[0].puntual !== undefined;
+  if (esRango) {
+    filas.push(['ID','Nombre','Área','Salón','Puntual','Tardío','Ausente','Feriado','Sin horario','Flexible','Horas extra (días)','Horas extra (min)',
+      'Horas trabajadas']);
+    allEmps.forEach(function(e) {
+      filas.push([e.id, e.nombre, e.area, e.salon, e.puntual||0, e.tardio||0, e.ausente||0, e.feriado||0, e.sin_horario||0, e.flexible||0, e.hora_extra||0, e.hora_extra_minutos||0, (function(){var tot=e.horas_trabajadas_min||0;var h=Math.floor(tot/60),m=tot%60;return h+'h '+(m<10?'0':'')+m+'min';})()]);
+    });
+  } else {
+    filas.push(['ID','Nombre','Área','Salón','Estado','Entrada esperada','Salida esperada','Entrada real','Salida real','Hora extra (min)']);
+    allEmps.forEach(function(e) {
+      var he = e.horario_esperado || {};
+      var rr = e.registro_real || {};
+      filas.push([e.id, e.nombre, e.area, e.salon, e.estado, he.entrada||''  , he.salida||'', rr.entrada||'', rr.salida||'', e.hora_extra_minutos||0,
+        Math.floor((e.horas_trabajadas_min || 0) / 60),
+        (e.horas_trabajadas_min || 0) % 60]);
+    });
+  }
+  var csv = filas.map(function(row) {
+    return row.map(function(cel) {
+      var s = String(cel == null ? '' : cel);
+      if (s.indexOf(',') !== -1 || s.indexOf('"') !== -1 || s.indexOf('\n') !== -1) {
+        s = '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    }).join(';');
+  }).join('\r\n');
+  var blob = new Blob(['\uFEFF' + 'sep=;\r\n' + csv], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Asistencia_' + desde + '_' + hasta + '.csv';
+  a.click();
+}
+</script>
+
+<!-- MODAL DETALLE EMPLEADO -->
+<div id="modal-overlay" style="display:none" role="dialog" aria-modal="true">
+<div id="modal-box">
+<div id="modal-hdr">
+<div>
+<div id="modal-nombre"></div>
+<div id="modal-sub"></div>
+</div>
+<button id="modal-close" aria-label="Cerrar">&#x2715;</button>
+</div>
+<div id="modal-body"></div>
+</div>
+</div>
+
+</body>
+</html>
+
+<!-- MODAL DETALLE EMPLEADO -->
+<div id="modal-overlay" style="display:none" role="dialog" aria-modal="true">
+<div id="modal-box">
+<div id="modal-hdr">
+<div>
+<div id="modal-nombre"></div>
+<div id="modal-sub"></div>
+</div>
+<button id="modal-close" aria-label="Cerrar">&#x2715;</button>
+</div>
+<div id="modal-body"></div>
+</div>
+</div>
+
+</body>
+</html>
