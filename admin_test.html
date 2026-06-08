@@ -63,7 +63,7 @@
   </div>
   <div class="field">
     <label>Nombre completo *</label>
-    <input type="text" id="nombre" placeholder="Ej: María López" autocomplete="off">
+    <input type="text" id="nombre" placeholder="Ej: María López" autocomplete="off" value="Pablo Kamalian">
   </div>
   <div class="field">
     <label>Salón *</label>
@@ -97,44 +97,15 @@ const CLIENT_ID = 'test-client';
 var stream = null, facing = 'user', fotoB64 = null, dniValidado = false;
 
 // === MÓDULO B — Validación de DNI ===
-async function checkDni() {
+function checkDni() {
   var dni = document.getElementById('dni').value.trim();
   var st  = document.getElementById('dniStatus');
-  if (!dni || dni.length < 6) { dniValidado = false; actualizarBoton(); return; }
+  if (!dni || dni.length < 6) { dniValidado = false; st.style.display='none'; actualizarBoton(); return; }
+  dniValidado = true;
   st.style.display = 'block';
-  st.style.background = '#1e293b';
-  st.style.color = '#94908a';
-  st.textContent = '🔍 Verificando DNI...';
-  dniValidado = false;
-  actualizarBoton();
-  try {
-    var r = await fetch(API_URL + '/empleados/validar?clientId=' + encodeURIComponent(CLIENT_ID) + '&dni=' + encodeURIComponent(dni));
-    var d = await r.json();
-    if (!d.ok) throw new Error(d.error || 'Error en servidor');
-    if (!d.encontrado) {
-      st.style.background = '#450a0a';
-      st.style.color = '#fca5a5';
-      st.textContent = '✗ DNI no encontrado en el sistema. Solicitá a RRHH que lo registre.';
-      dniValidado = false;
-    } else if (d.yaRegistrado) {
-      st.style.background = '#422006';
-      st.style.color = '#fdba74';
-      st.innerHTML = '⚠ Este empleado ya tiene rostro registrado. ¿Querés actualizarlo?<br><button onclick="confirmarUpdate()" style="margin-top:6px;padding:4px 12px;border-radius:6px;background:#f97316;color:white;border:none;cursor:pointer;font-size:.8rem">Sí, actualizar</button>';
-      if (d.datos) { document.getElementById('nombre').value = d.datos.nombre || ''; }
-      dniValidado = false;
-    } else {
-      st.style.background = '#052e16';
-      st.style.color = '#86efac';
-      st.textContent = '✓ Empleado encontrado. Podés continuar con el registro.';
-      if (d.datos) { document.getElementById('nombre').value = d.datos.nombre || ''; }
-      dniValidado = true;
-    }
-  } catch(e) {
-    st.style.background = '#1e293b';
-    st.style.color = '#f87171';
-    st.textContent = '⚠ Error al verificar el DNI. Revisá la conexión.';
-    dniValidado = false;
-  }
+  st.style.background = '#052e16';
+  st.style.color = '#86efac';
+  st.textContent = '✓ DNI listo para registrar';
   actualizarBoton();
 }
 
@@ -193,6 +164,7 @@ function actualizarBoton() {
   document.getElementById('btnReg').disabled = !(dniValidado && dni && nombre && salon && fotoB64);
 }
 
+document.addEventListener('DOMContentLoaded', function(){ checkDni(); });
 ['dni','nombre','salon'].forEach(id => {
   document.getElementById(id).addEventListener('input', actualizarBoton);
 });
