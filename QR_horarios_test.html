@@ -542,7 +542,7 @@ max-height: 40vh;
 <div id="screen-main">
 
 <header class="app-header">
-<div class="app-hdr-title"><em>TEST CLIENT</em> – Horarios</div>
+<div class="app-hdr-title"><em>FaceCheck Demo</em> – Horarios</div>
 <span class="header-title">Configuración de horarios</span>
 <a href="QR_dashboard_test.html" class="btn-volver">Volver al dashboard</a>
 <button class="btn-logout" id="btn-logout">Cerrar sesión</button>
@@ -613,7 +613,7 @@ Seleccioná un área para configurar su horario
 CONFIG
 ══════════════════════════════════════════════════════ */
 const API_URL   = "https://bq5vl6isk5v26ebokhtrrdo6nq0gvdhs.lambda-url.us-east-2.on.aws";
-const CLIENT_ID = "test-client"; // ← reemplazar con el ID del cliente
+const CLIENT_ID = "test-client";
 const ACCESOS = {
   "rrhh2026":   { label: "RRHH",          area: null },
   "coord2026":  { label: "COORDINACION",  area: "COORDINACION" },
@@ -647,7 +647,6 @@ HELPERS
 function $(id) { return document.getElementById(id); }
 
 async function apiFetch(params) {
-  // Mapeo de acciones Apps Script → endpoints Lambda
   const action = params.action;
   let url, options = { method: 'GET' };
   if (action === 'getHorarios') {
@@ -655,17 +654,11 @@ async function apiFetch(params) {
   } else if (action === 'setHorario') {
     url = API_URL + '/horarios/set';
     options = { method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        clientId: CLIENT_ID,
-        area: params.area,
-        dia: params.dia,
+      body: JSON.stringify({ clientId: CLIENT_ID, area: params.area, dia: params.dia,
         entrada: params.flexible === 'true' ? 'FLEXIBLE' : (params.entrada || ''),
-        salida: params.flexible === 'true' ? 'FLEXIBLE' : (params.salida || '')
-      })
+        salida:  params.flexible === 'true' ? 'FLEXIBLE' : (params.salida  || '') })
     };
-  } else {
-    throw new Error('Accion no reconocida: ' + action);
-  }
+  } else { throw new Error('Accion no reconocida: ' + action); }
   const res = await fetch(url, options);
   const json = await res.json();
   if (!json.ok) throw new Error(json.error || 'Error desconocido');
